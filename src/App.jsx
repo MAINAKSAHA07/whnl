@@ -2,15 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import Hyperspeed from "./Hyperspeed";
 
 const tiles = [
-  "images/preview (1).webp",
-  "images/preview (2).webp",
-  "images/preview (3).webp",
-  "images/preview (4).webp",
-  "images/preview (5).webp",
-  "images/preview (6).webp",
-  "images/preview (7).webp",
-  "images/preview (8).webp",
-  "images/preview.webp",
+  "/images/preview (1).webp",
+  "/images/preview (2).webp",
+  "/images/preview (3).webp",
+  "/images/preview (4).webp",
+  "/images/preview (5).webp",
+  "/images/preview (6).webp",
+  "/images/preview (7).webp",
+  "/images/preview (8).webp",
+  "/images/preview.webp",
 ];
 
 function App() {
@@ -147,7 +147,7 @@ function App() {
       <header className="header">
         <div className="brand">
           <img
-            src="images/FulllogowithoutBG.png"
+            src="/images/FulllogowithoutBG.png"
             alt="Logo"
             className="brand-logo"
           />
