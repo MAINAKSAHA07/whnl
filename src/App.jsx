@@ -1,196 +1,267 @@
 import React, { useEffect, useRef, useState } from "react";
 import Hyperspeed from "./Hyperspeed";
-
-const tiles = [
-  "/images/preview (1).webp",
-  "/images/preview (2).webp",
-  "/images/preview (3).webp",
-  "/images/preview (4).webp",
-  "/images/preview (5).webp",
-  "/images/preview (6).webp",
-  "/images/preview (7).webp",
-  "/images/preview (8).webp",
-  "/images/preview.webp",
-];
+import industries from "./data/industries";
+import DomeGallery from "./components/DomeGallery";
+import InstagramGrid from "./components/InstagramGrid";
 
 function App() {
-  const gridRef = useRef(null);
-  const cursorRef = useRef(null);
-  // Start with center image (index 4, the 5th image in a 3x3 grid)
-  const [activeIndex, setActiveIndex] = useState(4);
-  const [isFullscreen, setIsFullscreen] = useState(true);
+  const [hoveredIndustry, setHoveredIndustry] = useState(null);
+  const previewRef = useRef(null);
 
+  // Track cursor coordinates dynamically for the floating stack
   useEffect(() => {
-    const cursorEl = cursorRef.current;
-    const gridEl = gridRef.current;
-    if (!cursorEl || !gridEl) return;
+    const el = previewRef.current;
+    if (!el) return;
 
-    const gridItems = Array.from(
-      gridEl.querySelectorAll(".grid-item")
-    );
-
-    function findClosestItem(x, y) {
-      let closestIdx = null;
-      let minDist = Infinity;
-
-      gridItems.forEach((item, index) => {
-        const rect = item.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const dx = cx - x;
-        const dy = cy - y;
-        const dist = dx * dx + dy * dy;
-        if (dist < minDist) {
-          minDist = dist;
-          closestIdx = index;
-        }
-      });
-
-      return closestIdx;
-    }
-
-    function handlePointerMove(event) {
-      const x = event.clientX;
-      const y = event.clientY;
-
-      // Don't move the cursor image when fullscreen - keep it centered
-      // Only track position to determine which image to show
-      const closestIdx = findClosestItem(x, y);
-      if (closestIdx !== null && closestIdx !== activeIndex) {
-        setActiveIndex(closestIdx);
-      }
-
-      if (!cursorEl.classList.contains("visible")) {
-        cursorEl.classList.add("visible");
-      }
-    }
-
-    function handlePointerLeave() {
-      // Reset to center image when cursor leaves
-      setActiveIndex(4);
-    }
-
-    window.addEventListener("pointermove", handlePointerMove);
-    window.addEventListener("pointerleave", handlePointerLeave);
-
-    return () => {
-      window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("pointerleave", handlePointerLeave);
+    const handleMouseMove = (e) => {
+      // Add slight offset so it floats elegantly near the cursor
+      const offsetX = 180; 
+      const offsetY = -80;
+      el.style.left = `${e.clientX + offsetX}px`;
+      el.style.top = `${e.clientY + offsetY}px`;
     };
-  }, [activeIndex, isFullscreen]);
 
-  // Initialize cursor image on mount
-  useEffect(() => {
-    const cursorEl = cursorRef.current;
-    if (!cursorEl) return;
-
-    // Set initial position to center of screen
-    cursorEl.style.left = "50%";
-    cursorEl.style.top = "50%";
-    cursorEl.style.backgroundImage = `url("${tiles[activeIndex]}")`;
-    cursorEl.classList.add("fullscreen");
-    cursorEl.classList.add("visible");
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
-
-  // Update cursor image when activeIndex changes
-  useEffect(() => {
-    const cursorEl = cursorRef.current;
-    if (!cursorEl) return;
-
-    // Always show the active image fullscreen
-    if (activeIndex !== null) {
-      cursorEl.style.backgroundImage = `url("${tiles[activeIndex]}")`;
-    }
-  }, [activeIndex]);
 
   return (
     <div className="page">
-      <Hyperspeed
-        effectOptions={{
-          onSpeedUp: () => {},
-          onSlowDown: () => {},
-          distortion: "turbulentDistortion",
-          length: 400,
-          roadWidth: 10,
-          islandWidth: 2,
-          lanesPerRoad: 4,
-          fov: 90,
-          fovSpeedUp: 150,
-          speedUp: 2,
-          carLightsFade: 0.4,
-          totalSideLightSticks: 20,
-          lightPairsPerRoadWay: 40,
-          shoulderLinesWidthPercentage: 0.05,
-          brokenLinesWidthPercentage: 0.1,
-          brokenLinesLengthPercentage: 0.5,
-          lightStickWidth: [0.12, 0.5],
-          lightStickHeight: [1.3, 1.7],
-          movingAwaySpeed: [60, 80],
-          movingCloserSpeed: [-120, -160],
-          carLightsLength: [400 * 0.03, 400 * 0.2],
-          carLightsRadius: [0.05, 0.14],
-          carWidthPercentage: [0.3, 0.5],
-          carShiftX: [-0.8, 0.8],
-          carFloorSeparation: [0, 5],
-          colors: {
-            roadColor: 0x080808,
-            islandColor: 0x0a0a0a,
-            background: 0x000000,
-            shoulderLines: 0xffffff,
-            brokenLines: 0xffffff,
-            leftCars: [0xd856bf, 0x6750a2, 0xc247ac],
-            rightCars: [0x03b3c3, 0x0e5ea5, 0x324555],
-            sticks: 0x03b3c3,
-          },
-        }}
-      />
+      {/* Navigation Header */}
       <header className="header">
-        <div className="brand">
+        <div className="brand-logo-container">
           <img
             src="/images/FulllogowithoutBG.png"
-            alt="Logo"
+            alt="WHNL Logo"
             className="brand-logo"
           />
         </div>
+        <nav className="nav-links">
+          <a href="#industries" className="nav-link">Sectors</a>
+          <a href="#social" className="nav-link">Journal</a>
+          <a href="#communities" className="nav-link">Careers</a>
+        </nav>
       </header>
 
-      <main className="main">
-        <section
-          className={`grid-container ${isFullscreen ? "hidden" : ""}`}
-          ref={gridRef}
-        >
-          {tiles.map((src, index) => (
-            <div
-              key={src}
-              className={[
-                "grid-item",
-                activeIndex === index ? "is-focused" : "",
-                activeIndex !== index ? "dimmed" : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              style={{ backgroundImage: `url("${src}")` }}
-            />
-          ))}
+      {/* Hero Section */}
+      <section className="hero-section">
+        <div className="hero-hyperspeed-container">
+          <Hyperspeed
+            effectOptions={{
+              onSpeedUp: () => {},
+              onSlowDown: () => {},
+              distortion: "turbulentDistortion",
+              length: 400,
+              roadWidth: 12,
+              islandWidth: 3,
+              lanesPerRoad: 3,
+              fov: 80,
+              fovSpeedUp: 130,
+              speedUp: 1.5,
+              carLightsFade: 0.5,
+              totalSideLightSticks: 15,
+              lightPairsPerRoadWay: 30,
+              shoulderLinesWidthPercentage: 0.05,
+              brokenLinesWidthPercentage: 0.08,
+              brokenLinesLengthPercentage: 0.4,
+              lightStickWidth: [0.1, 0.4],
+              lightStickHeight: [1.2, 1.6],
+              movingAwaySpeed: [50, 70],
+              movingCloserSpeed: [-100, -140],
+              carLightsLength: [400 * 0.02, 400 * 0.15],
+              carLightsRadius: [0.04, 0.12],
+              carWidthPercentage: [0.25, 0.45],
+              carShiftX: [-0.6, 0.6],
+              carFloorSeparation: [0, 4],
+              colors: {
+                roadColor: 0x000000,
+                islandColor: 0x050505,
+                background: 0x000000,
+                shoulderLines: 0xffffff,
+                brokenLines: 0xffffff,
+                leftCars: [0xfcccd5, 0xe6ccff, 0xffd6cc], // pastel pink, lavender, peach
+                rightCars: [0xccf2eb, 0xd1ecf1, 0xcce0ff], // pastel mint, cyan, blue
+                sticks: 0xe6ccff, // pastel lavender
+              },
+            }}
+          />
+        </div>
+        <div className="hero-overlay" />
+        <div className="hero-content">
+          <div className="hero-title-group">
+            <span className="hero-tagline">WHNL Group</span>
+            <h1 className="hero-title">What starts here<br />changes the world.</h1>
+            <p className="hero-subtitle">
+              We are a holding company of businesses that make an impact.
+            </p>
+          </div>
+          <div className="hero-cta-group">
+            <button 
+              className="btn-primary"
+              onClick={() => {
+                const el = document.getElementById("communities");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
+              Explore Careers & Communities
+            </button>
+          </div>
+        </div>
+
+        <a href="#industries" className="scroll-indicator">
+          <span className="scroll-text">Explore</span>
+          <div className="scroll-line"></div>
+        </a>
+      </section>
+
+      {/* Main Content Area */}
+      <main>
+        {/* Desktop Zaina-style Industry Index List */}
+        <section id="industries" className="zaina-index-section">
+          <div className="zaina-section-header">
+            <span className="section-label">Pursuits</span>
+            <h2 className="section-title">The WHNL Portfolio</h2>
+            <p className="section-description">
+              An intersection of vision, intellect, and impact. A diverse ecosystem of businesses operating with an obsession for excellence.
+            </p>
+          </div>
+
+          <div className="filters-row">
+            <span className="filters-title">Industries Index</span>
+            <div className="filter-tags">
+              <span className="filter-tag active">All Sectors ({industries.length})</span>
+              <span className="filter-tag">Consumer</span>
+              <span className="filter-tag">Tech & AI</span>
+              <span className="filter-tag">IP & Creative</span>
+            </div>
+          </div>
+
+          <div className="zaina-table">
+            {industries.map((ind, index) => (
+              <div
+                key={ind.id}
+                className="zaina-row"
+                onMouseEnter={() => setHoveredIndustry(ind)}
+                onMouseLeave={() => setHoveredIndustry(null)}
+              >
+                <span className="row-num">{(index + 1).toString().padStart(2, "0")}</span>
+                <span className="row-name">{ind.name}</span>
+                <span className="row-tagline">{ind.tagline}</span>
+                <div className="row-action">
+                  <span className="action-arrow">→</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Mouse Floating Stack Image Preview */}
+          <div
+            ref={previewRef}
+            className={`float-preview-container ${hoveredIndustry ? "visible" : ""}`}
+          >
+            {hoveredIndustry && (
+              <div className="image-stack">
+                {hoveredIndustry.images.slice(0, 3).map((url, i) => (
+                  <div
+                    key={i}
+                    className={`stack-image img-${i}`}
+                    style={{ backgroundImage: `url("${url}")` }}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Mobile Dome Gallery component (takes active industries) */}
+        <section className="dome-gallery-section">
+          <DomeGallery items={industries} />
+        </section>
+
+        {/* Journal / Instagram Grid Section */}
+        <section id="social">
+          <InstagramGrid />
+        </section>
+
+        {/* Careers & Communities Section */}
+        <section id="communities" className="communities-section">
+          <div className="communities-content">
+            <span className="section-label">Join Our Pursuit</span>
+            <h2 className="section-title">Careers & Communities</h2>
+            <p className="section-description">
+              We believe in ourselves almost to the point of delusion. If you carry unwavering participation, no limitations, and a healthy dose of tenacity, let's design the future together.
+            </p>
+
+            <div className="communities-grid">
+              <div className="community-card">
+                <span className="card-label">Active Talents</span>
+                <h3 className="card-title">Explore Careers</h3>
+                <p className="card-description">
+                  Discover open opportunities across our businesses in technology, FMCG, SaaS, manufacturing, real estate, and finance.
+                </p>
+                <a href="#apply" className="card-link" onClick={(e) => { e.preventDefault(); alert("Talent recruitment portal coming soon. For inquiries, email careers@whnl.group"); }}>
+                  Apply Online <span>→</span>
+                </a>
+              </div>
+
+              <div className="community-card">
+                <span className="card-label">Eco-systems</span>
+                <h3 className="card-title">Our Communities</h3>
+                <p className="card-description">
+                  Learn about our collaborative networks, events, hackathons, creative IPs, and wellness experiences designed to cultivate impact.
+                </p>
+                <a href="#connect" className="card-link" onClick={(e) => { e.preventDefault(); alert("Community platform launch scheduled for Fall 2026."); }}>
+                  Get Involved <span>→</span>
+                </a>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
 
-      <div className={`backdrop-blur ${isFullscreen ? "active" : ""}`} />
-
-      <div className="cursor-overlay">
-        <div className="cursor-image" ref={cursorRef} />
-      </div>
-
-      <footer className="footer">
-        <span>
-          Move your mouse across the wall – the image under your cursor fills
-          the entire screen.
-        </span>
+      {/* Footer */}
+      <footer className="whnl-footer">
+        <div className="footer-top">
+          <div className="footer-brand">
+            <img
+              src="/images/FulllogowithoutBG.png"
+              alt="WHNL Logo"
+              className="footer-logo"
+            />
+            <p className="footer-pitch">
+              One group, many pursuits, and an obsession for excellence.
+            </p>
+          </div>
+          <div className="footer-cols">
+            <div className="footer-col">
+              <h4 className="footer-col-title">Operations</h4>
+              <ul>
+                <li><a href="#industries">Consumer & FMCG</a></li>
+                <li><a href="#industries">Technology & SaaS</a></li>
+                <li><a href="#industries">Manufacturing & Logistics</a></li>
+                <li><a href="#industries">IPs & Media</a></li>
+              </ul>
+            </div>
+            <div className="footer-col">
+              <h4 className="footer-col-title">Company</h4>
+              <ul>
+                <li><a href="#social">Journal</a></li>
+                <li><a href="#communities">Careers</a></li>
+                <li><a href="#communities">Communities</a></li>
+                <li><a href="#contact" onClick={(e) => { e.preventDefault(); alert("Contact: hello@whnl.group"); }}>Contact Us</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <span>&copy; {new Date().getFullYear()} WHNL Group. All rights reserved.</span>
+          <span>Sleek • Premium • sorted</span>
+        </div>
       </footer>
     </div>
   );
 }
 
 export default App;
-
-
