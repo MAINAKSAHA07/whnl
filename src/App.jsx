@@ -3,9 +3,11 @@ import Hyperspeed from "./Hyperspeed";
 import industries from "./data/industries";
 import DomeGallery from "./components/DomeGallery";
 import InstagramGrid from "./components/InstagramGrid";
+import ScrollRevealText from "./components/ScrollRevealText";
 
 function App() {
   const [hoveredIndustry, setHoveredIndustry] = useState(null);
+  const [activeCategory, setActiveCategory] = useState("all");
   const previewRef = useRef(null);
 
   // Track cursor coordinates dynamically for the floating stack
@@ -26,6 +28,11 @@ function App() {
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
+
+  // Filter industries based on the active tab category
+  const filteredIndustries = activeCategory === "all"
+    ? industries
+    : industries.filter(ind => ind.category === activeCategory);
 
   return (
     <div className="page">
@@ -93,9 +100,10 @@ function App() {
           <div className="hero-title-group">
             <span className="hero-tagline">WHNL Group</span>
             <h1 className="hero-title">What starts here<br />changes the world.</h1>
-            <p className="hero-subtitle">
-              We are a holding company of businesses that make an impact.
-            </p>
+            <ScrollRevealText
+              text="We are a holding company of businesses that make an impact."
+              className="hero-subtitle"
+            />
           </div>
           <div className="hero-cta-group">
             <button 
@@ -123,23 +131,44 @@ function App() {
           <div className="zaina-section-header">
             <span className="section-label">Pursuits</span>
             <h2 className="section-title">The WHNL Portfolio</h2>
-            <p className="section-description">
-              An intersection of vision, intellect, and impact. A diverse ecosystem of businesses operating with an obsession for excellence.
-            </p>
+            <ScrollRevealText
+              text="An intersection of vision, intellect, and impact. A diverse ecosystem of businesses operating with an obsession for excellence."
+              className="section-description"
+            />
           </div>
 
           <div className="filters-row">
             <span className="filters-title">Industries Index</span>
             <div className="filter-tags">
-              <span className="filter-tag active">All Sectors ({industries.length})</span>
-              <span className="filter-tag">Consumer</span>
-              <span className="filter-tag">Tech & AI</span>
-              <span className="filter-tag">IP & Creative</span>
+              <button 
+                className={`filter-tag ${activeCategory === "all" ? "active" : ""}`}
+                onClick={() => setActiveCategory("all")}
+              >
+                All Sectors ({industries.length})
+              </button>
+              <button 
+                className={`filter-tag ${activeCategory === "consumer" ? "active" : ""}`}
+                onClick={() => setActiveCategory("consumer")}
+              >
+                Consumer
+              </button>
+              <button 
+                className={`filter-tag ${activeCategory === "tech" ? "active" : ""}`}
+                onClick={() => setActiveCategory("tech")}
+              >
+                Tech & AI
+              </button>
+              <button 
+                className={`filter-tag ${activeCategory === "creative" ? "active" : ""}`}
+                onClick={() => setActiveCategory("creative")}
+              >
+                IP & Creative
+              </button>
             </div>
           </div>
 
           <div className="zaina-table">
-            {industries.map((ind, index) => (
+            {filteredIndustries.map((ind, index) => (
               <div
                 key={ind.id}
                 className="zaina-row"
@@ -190,9 +219,10 @@ function App() {
           <div className="communities-content">
             <span className="section-label">Join Our Pursuit</span>
             <h2 className="section-title">Careers & Communities</h2>
-            <p className="section-description">
-              We believe in ourselves almost to the point of delusion. If you carry unwavering participation, no limitations, and a healthy dose of tenacity, let's design the future together.
-            </p>
+            <ScrollRevealText
+              text="We believe in ourselves almost to the point of delusion. If you carry unwavering participation, no limitations, and a healthy dose of tenacity, let's design the future together."
+              className="section-description"
+            />
 
             <div className="communities-grid">
               <div className="community-card">

@@ -1,6 +1,7 @@
 const industries = [
   {
     id: "fmcg",
+    category: "consumer",
     name: "Consumer Goods & FMCG",
     tagline: "Everyday essentials, crafted for a premium lifestyle.",
     accent: "#ffddcc", // pastel peach
@@ -13,6 +14,7 @@ const industries = [
   },
   {
     id: "manufacturing",
+    category: "tech",
     name: "Manufacturing",
     tagline: "Precision engineering and smart factories of tomorrow.",
     accent: "#d4edda", // pastel mint
@@ -25,6 +27,7 @@ const industries = [
   },
   {
     id: "warehousing",
+    category: "tech",
     name: "Warehousing & Logistics",
     tagline: "Seamless fulfillment centers driving global supply chains.",
     accent: "#cce5ff", // pastel blue
@@ -37,6 +40,7 @@ const industries = [
   },
   {
     id: "consumer-tech",
+    category: "tech",
     name: "Consumer Tech & Apps",
     tagline: "Beautifully designed interfaces connecting people.",
     accent: "#f8d7da", // pastel rose
@@ -49,6 +53,7 @@ const industries = [
   },
   {
     id: "saas",
+    category: "tech",
     name: "SaaS",
     tagline: "Enterprise workflows streamlined into single-pane control.",
     accent: "#e2e3e5", // pastel gray
@@ -61,6 +66,7 @@ const industries = [
   },
   {
     id: "ai-tools",
+    category: "tech",
     name: "AI Tools & Agents",
     tagline: "The cognitive layer automating tasks and amplifying intellect.",
     accent: "#fff3cd", // pastel yellow
@@ -73,6 +79,7 @@ const industries = [
   },
   {
     id: "health",
+    category: "consumer",
     name: "Health & Wellness",
     tagline: "Nurturing minds and bodies with mindful digital touchpoints.",
     accent: "#d1ecf1", // pastel cyan
@@ -85,6 +92,7 @@ const industries = [
   },
   {
     id: "education",
+    category: "creative",
     name: "Education",
     tagline: "Empowering curious minds through intuitive learning platforms.",
     accent: "#e8dbfc", // pastel purple
@@ -97,6 +105,7 @@ const industries = [
   },
   {
     id: "agriculture",
+    category: "tech",
     name: "Agriculture",
     tagline: "Sustainable food tech and vertical crop optimization.",
     accent: "#d4edda", // pastel mint green
@@ -109,6 +118,7 @@ const industries = [
   },
   {
     id: "media",
+    category: "creative",
     name: "Media, News & Entertainment",
     tagline: "Culture-defining storytelling that shapes the zeitgeist.",
     accent: "#ffeeba", // pastel warm gold
@@ -121,6 +131,7 @@ const industries = [
   },
   {
     id: "social-media",
+    category: "creative",
     name: "Social Media",
     tagline: "Enabling next-generation content creators and networks.",
     accent: "#f8d7da", // pastel rose pink
@@ -133,6 +144,7 @@ const industries = [
   },
   {
     id: "marketing",
+    category: "creative",
     name: "Marketing",
     tagline: "Performance strategies backed by behavioral economics.",
     accent: "#e8dbfc", // pastel lavender
@@ -145,6 +157,7 @@ const industries = [
   },
   {
     id: "tech-research",
+    category: "tech",
     name: "Technology & Research",
     tagline: "Pioneering studies and technological breakthroughs.",
     accent: "#cce5ff", // pastel ice blue
@@ -157,6 +170,7 @@ const industries = [
   },
   {
     id: "finance",
+    category: "tech",
     name: "Finance & Compliance",
     tagline: "Intelligent asset management and compliance systems.",
     accent: "#e2e3e5", // pastel silver grey
@@ -169,6 +183,7 @@ const industries = [
   },
   {
     id: "real-estate",
+    category: "consumer",
     name: "Real Estate",
     tagline: "Architectural structures designed with human scale in mind.",
     accent: "#ffddcc", // pastel orange-peach
@@ -181,6 +196,7 @@ const industries = [
   },
   {
     id: "travel",
+    category: "consumer",
     name: "Travel & Hospitality",
     tagline: "Curating bespoke travel diaries and sensory hotels.",
     accent: "#d1ecf1", // pastel turquoise
@@ -193,6 +209,7 @@ const industries = [
   },
   {
     id: "ips",
+    category: "creative",
     name: "IPs & Creative Assets",
     tagline: "Protecting, fostering, and monetizing unique design IPs.",
     accent: "#fff3cd", // pastel soft amber
@@ -205,6 +222,7 @@ const industries = [
   },
   {
     id: "events",
+    category: "consumer",
     name: "Events & Experiences",
     tagline: "Gathering communities in beautifully staged spaces.",
     accent: "#d4edda", // pastel pale mint
