@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Hyperspeed from "./Hyperspeed";
+import WaylineCity from "./components/WaylineCity";
 import industries from "./data/industries";
 import DomeGallery from "./components/DomeGallery";
 import InstagramGrid from "./components/InstagramGrid";
@@ -55,47 +55,10 @@ function App() {
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-hyperspeed-container">
-          <Hyperspeed
-            effectOptions={{
-              onSpeedUp: () => {},
-              onSlowDown: () => {},
-              distortion: "turbulentDistortion",
-              length: 400,
-              roadWidth: 12,
-              islandWidth: 3,
-              lanesPerRoad: 3,
-              fov: 80,
-              fovSpeedUp: 130,
-              speedUp: 1.5,
-              carLightsFade: 0.5,
-              totalSideLightSticks: 15,
-              lightPairsPerRoadWay: 30,
-              shoulderLinesWidthPercentage: 0.05,
-              brokenLinesWidthPercentage: 0.08,
-              brokenLinesLengthPercentage: 0.4,
-              lightStickWidth: [0.1, 0.4],
-              lightStickHeight: [1.2, 1.6],
-              movingAwaySpeed: [50, 70],
-              movingCloserSpeed: [-100, -140],
-              carLightsLength: [400 * 0.02, 400 * 0.15],
-              carLightsRadius: [0.04, 0.12],
-              carWidthPercentage: [0.25, 0.45],
-              carShiftX: [-0.6, 0.6],
-              carFloorSeparation: [0, 4],
-              colors: {
-                roadColor: 0x000000,
-                islandColor: 0x050505,
-                background: 0x000000,
-                shoulderLines: 0xffffff,
-                brokenLines: 0xffffff,
-                leftCars: [0xfcccd5, 0xe6ccff, 0xffd6cc], // pastel pink, lavender, peach
-                rightCars: [0xccf2eb, 0xd1ecf1, 0xcce0ff], // pastel mint, cyan, blue
-                sticks: 0xe6ccff, // pastel lavender
-              },
-            }}
-          />
+          <WaylineCity />
         </div>
         <div className="hero-overlay" />
+        <div className="hero-bottom-fade" />
         <div className="hero-content">
           <div className="hero-title-group">
             <span className="hero-tagline">WHNL Group</span>

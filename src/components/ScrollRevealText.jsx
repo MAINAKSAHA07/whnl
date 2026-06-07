@@ -31,12 +31,12 @@ function ScrollRevealText({ text, className }) {
         // Calculate normal progress for this specific word
         const wordProgress = Math.min(Math.max(0, (progress - wordStart) / wordDuration), 1);
         
-        // Scale opacity from 0.22 (dimmed) to 1.0 (fully lit)
-        const opacity = 0.22 + wordProgress * 0.78;
+        // Scale opacity from 0.35 (dimmed) to 1.0 (fully lit)
+        const opacity = 0.35 + wordProgress * 0.65;
         span.style.opacity = opacity;
         
-        // Transition text colors: white for illuminated, gray for dimmed
-        span.style.color = wordProgress > 0.4 ? "#ffffff" : "#86868b";
+        // Transition text colors: white for illuminated, light gray for dimmed
+        span.style.color = wordProgress > 0.4 ? "#ffffff" : "#a1a1a6";
       });
     };
 
@@ -61,8 +61,8 @@ function ScrollRevealText({ text, className }) {
           style={{
             display: "inline-block",
             marginRight: "0.26em",
-            opacity: 0.22,
-            color: "#86868b",
+            opacity: 0.35,
+            color: "#a1a1a6",
             transition: "opacity 0.08s ease-out, color 0.08s ease-out",
             willChange: "opacity, color"
           }}
