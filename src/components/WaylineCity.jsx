@@ -45,7 +45,7 @@ function WaylineCity() {
     scene.add(sunLight);
 
     // 5. Twinkling Stars
-    const starCount = 100;
+    const starCount = 280;
     const starGeometry = new THREE.BufferGeometry();
     const starPositions = new Float32Array(starCount * 3);
 
