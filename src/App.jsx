@@ -4,6 +4,7 @@ import industries from "./data/industries";
 import DomeGallery from "./components/DomeGallery";
 import InstagramGrid from "./components/InstagramGrid";
 import ScrollRevealText from "./components/ScrollRevealText";
+import ScrollPlaybook from "./components/ScrollPlaybook";
 
 function App() {
   const [hoveredIndustry, setHoveredIndustry] = useState(null);
@@ -87,13 +88,16 @@ function App() {
         </a>
       </section>
 
+      <ScrollPlaybook />
+
       {/* Main Content Area */}
       <main>
+        <section id="industries">
         {/* Desktop Zaina-style Industry Index List */}
-        <section id="industries" className="zaina-index-section">
+        <div className="zaina-index-section">
           <div className="zaina-section-header">
             <span className="section-label">Pursuits</span>
-            <h2 className="section-title">The WHNL Portfolio</h2>
+            <h2 id="portfolio-heading" className="section-title">The WHNL Portfolio</h2>
             <ScrollRevealText
               text="An intersection of vision, intellect, and impact. A diverse ecosystem of businesses operating with an obsession for excellence."
               className="section-description"
@@ -165,11 +169,10 @@ function App() {
               </div>
             )}
           </div>
-        </section>
+        </div>
 
         {/* Mobile Dome Gallery component (takes active industries) */}
-        <section className="dome-gallery-section">
-          <DomeGallery items={industries} />
+        <DomeGallery items={industries} />
         </section>
 
         {/* Journal / Instagram Grid Section */}

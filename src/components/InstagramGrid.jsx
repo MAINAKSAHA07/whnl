@@ -151,7 +151,6 @@ function InstagramGrid() {
             <div className="insta-bio">
               <p className="bio-name">WHNL Group</p>
               <p className="bio-desc">One group, many pursuits. Rooted in clarity, action, and impact.</p>
-              <a href="#explore" className="bio-link">zaina.international/whnl</a>
             </div>
           </div>
         </div>

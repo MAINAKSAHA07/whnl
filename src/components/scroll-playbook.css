@@ -1,0 +1,397 @@
+/* Scroll playbook — scoped scroll-driven grid (Craft of UI pattern) */
+
+.scroll-playbook {
+  --sp-container-width: 1600px;
+  --sp-gap: clamp(10px, 7.35vw, 80px);
+  --sp-gutter: 2rem;
+  --sp-power-1-out: linear(
+    0 0%,
+    0.0027 3.64%,
+    0.0106 7.29%,
+    0.0425 14.58%,
+    0.0957 21.87%,
+    0.1701 29.16%,
+    0.2477 35.19%,
+    0.3401 41.23%,
+    0.5982 55.18%,
+    0.7044 61.56%,
+    0.7987 68.28%,
+    0.875 75%,
+    0.9297 81.25%,
+    0.9687 87.5%,
+    0.9922 93.75%,
+    1 100%
+  );
+  --sp-power-2-out: linear(
+    0 0%,
+    0.0036 9.62%,
+    0.0185 16.66%,
+    0.0489 23.03%,
+    0.0962 28.86%,
+    0.1705 34.93%,
+    0.269 40.66%,
+    0.3867 45.89%,
+    0.5833 52.95%,
+    0.683 57.05%,
+    0.7829 62.14%,
+    0.8621 67.46%,
+    0.8991 70.68%,
+    0.9299 74.03%,
+    0.9545 77.52%,
+    0.9735 81.21%,
+    0.9865 85%,
+    0.9949 89.15%,
+    1 100%
+  );
+  --sp-power-3-out: linear(
+    0 0%,
+    0.0029 13.8%,
+    0.0184 21.9%,
+    0.0339 25.51%,
+    0.0551 28.81%,
+    0.0827 31.88%,
+    0.1168 34.76%,
+    0.1962 39.57%,
+    0.3005 44.02%,
+    0.4084 47.53%,
+    0.6242 53.45%,
+    0.7493 57.93%,
+    0.8495 62.97%,
+    0.8888 65.67%,
+    0.9213 68.51%,
+    0.9629 73.9%,
+    0.9876 80.16%,
+    0.998 87.5%,
+    1 100%
+  );
+  --sp-power-4-out: linear(
+    0 0%,
+    0.0012 14.95%,
+    0.0089 22.36%,
+    0.0297 28.43%,
+    0.0668 33.43%,
+    0.0979 36.08%,
+    0.1363 38.55%,
+    0.2373 43.07%,
+    0.3675 47.01%,
+    0.5984 52.15%,
+    0.7121 55.23%,
+    0.8192 59.21%,
+    0.898 63.62%,
+    0.9297 66.23%,
+    0.9546 69.06%,
+    0.9733 72.17%,
+    0.9864 75.67%,
+    0.9982 83.73%,
+    1 100%
+  );
+  --sp-sine: linear(
+    0 0%,
+    0.2861 18.47%,
+    0.4829 32.08%,
+    0.6437 44.52%,
+    0.7712 56.07%,
+    0.8722 67.47%,
+    0.9115 73.02%,
+    0.9434 78.49%,
+    0.9682 83.91%,
+    0.9859 89.3%,
+    0.9965 94.66%,
+    1 100%
+  );
+
+  position: relative;
+  z-index: 5;
+  background: var(--bg-dark);
+  overflow: clip;
+}
+
+@media (max-width: 600px) {
+  .scroll-playbook {
+    --sp-gutter: 1rem;
+  }
+}
+
+@keyframes sp-fade {
+  0%,
+  55% {
+    opacity: 0;
+  }
+}
+
+@keyframes sp-reveal {
+  0%,
+  30% {
+    scale: 0;
+  }
+}
+
+@keyframes sp-scale-x {
+  0%,
+  10% {
+    width: calc(100vw - (2 * var(--sp-gutter)));
+  }
+}
+
+@keyframes sp-scale-y {
+  0%,
+  10% {
+    height: calc(100vh - (2 * var(--sp-gutter)));
+  }
+}
+
+.scroll-playbook__runner {
+  position: relative;
+}
+
+.scroll-playbook[data-enhanced="true"] .scroll-playbook__runner {
+  min-height: 100vh;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-playbook[data-enhanced="true"] .scroll-playbook__runner {
+    min-height: 240vh;
+  }
+
+  @media (max-width: 768px) {
+    .scroll-playbook[data-enhanced="true"] .scroll-playbook__runner {
+      min-height: 160vh;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .scroll-playbook[data-enhanced="true"] .scroll-playbook__runner {
+      min-height: 140vh;
+    }
+  }
+
+  @supports (animation-timeline: scroll()) and (animation-range: 0 100%) {
+    .scroll-playbook[data-enhanced="true"] .scroll-playbook__runner {
+      view-timeline: --sp-runner;
+    }
+
+    .scroll-playbook[data-center="true"] .scroll-playbook__scaler img {
+      animation-name: sp-scale-x, sp-scale-y;
+      animation-fill-mode: both;
+      animation-timing-function: var(--sp-power-2-out), var(--sp-power-1-out);
+      animation-timeline: --sp-runner, --sp-runner;
+      animation-range: entry 100% exit -20%;
+    }
+
+    .scroll-playbook[data-layers="true"] .scroll-playbook__layer {
+      animation-name: sp-fade, sp-reveal;
+      animation-fill-mode: both;
+      animation-timeline: --sp-runner, --sp-runner;
+      animation-timing-function: var(--sp-sine), var(--sp-power-1-out);
+      animation-range: entry 100% exit 0%;
+    }
+
+    .scroll-playbook[data-stagger="range"] .scroll-playbook__layer:nth-of-type(1) {
+      animation-range: entry 100% exit 0%;
+    }
+
+    .scroll-playbook[data-stagger="range"] .scroll-playbook__layer:nth-of-type(2) {
+      animation-range: entry 100% exit -10%;
+      animation-timing-function: var(--sp-sine), var(--sp-power-3-out);
+    }
+
+    .scroll-playbook[data-stagger="range"] .scroll-playbook__layer:nth-of-type(3) {
+      animation-range: entry 100% exit -20%;
+      animation-timing-function: var(--sp-sine), var(--sp-power-4-out);
+    }
+  }
+}
+
+.scroll-playbook__sticky {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  place-items: center;
+  align-content: center;
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+}
+
+.scroll-playbook__intro {
+  position: absolute;
+  top: 12%;
+  left: max(var(--sp-gutter), 4rem);
+  z-index: 1;
+  pointer-events: none;
+  text-align: left;
+}
+
+.scroll-playbook__label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--pastel-peach);
+  margin-bottom: 0.75rem;
+}
+
+.scroll-playbook__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2.5rem, 8vw, 6.5rem);
+  font-weight: 400;
+  line-height: 0.62;
+  color: var(--text-primary);
+  opacity: 0.92;
+}
+
+.scroll-playbook__grid {
+  --sp-offset: 0;
+  width: var(--sp-container-width);
+  max-width: calc(100% - (2 * var(--sp-gutter)));
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(3, auto);
+  gap: var(--sp-gap);
+  margin: 0 auto;
+  align-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+
+@media (max-width: 600px) {
+  .scroll-playbook__grid {
+    grid-template-columns: repeat(3, 1fr);
+    --sp-offset: -1;
+  }
+
+  .scroll-playbook__layer:first-of-type .scroll-playbook__cell:first-child {
+    display: none;
+  }
+}
+
+.scroll-playbook__layer {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
+  transform-origin: center;
+}
+
+.scroll-playbook__layer:nth-of-type(1) .scroll-playbook__cell:nth-of-type(odd) {
+  grid-column: 1;
+}
+
+.scroll-playbook__layer:nth-of-type(1) .scroll-playbook__cell:nth-of-type(even) {
+  grid-column: -2;
+}
+
+.scroll-playbook__layer:nth-of-type(2) .scroll-playbook__cell:nth-of-type(odd) {
+  grid-column: calc(2 + var(--sp-offset));
+}
+
+.scroll-playbook__layer:nth-of-type(2) .scroll-playbook__cell:nth-of-type(even) {
+  grid-column: calc(-3 - var(--sp-offset));
+}
+
+.scroll-playbook__layer:nth-of-type(3) .scroll-playbook__cell {
+  grid-column: calc(3 + var(--sp-offset));
+}
+
+.scroll-playbook__layer:nth-of-type(3) .scroll-playbook__cell:last-of-type {
+  grid-row: -1;
+}
+
+.scroll-playbook__scaler {
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  grid-area: 2 / calc(3 + var(--sp-offset));
+}
+
+.scroll-playbook__scaler img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  object-fit: cover;
+  border-radius: 1rem;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.scroll-playbook__cell img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.scroll-playbook__fin {
+  min-height: auto;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 2.5rem var(--sp-gutter) 1.5rem;
+  background: linear-gradient(to bottom, var(--bg-dark), var(--bg-darker));
+}
+
+.scroll-playbook__fin-label {
+  display: block;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.scroll-playbook__fin-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .scroll-playbook__fin {
+    padding: 1.25rem var(--sp-gutter) 0.5rem;
+  }
+
+  .scroll-playbook__fin-label {
+    margin-bottom: 0.35rem;
+  }
+
+  .scroll-playbook__fin-title {
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .scroll-playbook__fin {
+    padding: 1rem var(--sp-gutter) 0.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-playbook[data-enhanced="true"] .scroll-playbook__runner {
+    min-height: auto;
+  }
+
+  .scroll-playbook__sticky {
+    position: relative;
+  }
+
+  .scroll-playbook__layer {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .scroll-playbook__scaler img {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}

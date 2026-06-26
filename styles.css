@@ -542,27 +542,31 @@ body {
 .dome-gallery-viewport {
   position: relative;
   width: 100%;
+  max-width: 100vw;
   height: 480px;
-  perspective: 1200px;
-  perspective-origin: 50% 30%;
+  perspective: var(--dome-perspective, 1200px);
+  perspective-origin: 50% 38%;
   display: flex;
   justify-content: center;
   align-items: center;
-  touch-action: none;
+  touch-action: pan-y pinch-zoom;
+  overflow: hidden;
+  margin: 0 auto;
 }
 
 .dome-gallery-cylinder {
   position: relative;
-  width: 180px;
-  height: 250px;
+  width: var(--dome-card-w, 180px);
+  height: var(--dome-card-h, 250px);
   transform-style: preserve-3d;
   transition: transform 0.1s ease-out;
+  will-change: transform;
 }
 
 .dome-gallery-card {
   position: absolute;
-  width: 180px;
-  height: 250px;
+  width: var(--dome-card-w, 180px);
+  height: var(--dome-card-h, 250px);
   left: 0;
   top: 0;
   border-radius: 12px;
@@ -572,7 +576,7 @@ body {
   display: flex;
   flex-direction: column;
   transform-style: preserve-3d;
-  backface-visibility: visible;
+  backface-visibility: hidden;
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -583,24 +587,30 @@ body {
 }
 
 .dome-card-meta {
-  padding: 0.8rem;
+  padding: 0.65rem 0.7rem;
   text-align: left;
   background: #08080a;
+  flex-shrink: 0;
+  min-height: 3.25rem;
 }
 
 .dome-card-number {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--text-muted);
   display: block;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.15rem;
 }
 
 .dome-card-title {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  white-space: nowrap;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
 }
 
 /* Instagram Section */
@@ -708,12 +718,6 @@ body {
 .bio-desc {
   color: var(--text-secondary);
   margin-bottom: 0.4rem;
-}
-
-.bio-link {
-  color: var(--pastel-blue);
-  text-decoration: none;
-  font-weight: 500;
 }
 
 /* Grid Layout */
@@ -1464,6 +1468,36 @@ body {
 
   .dome-gallery-section {
     display: block; /* Show 3D Dome Gallery on mobile */
+    padding: 1.5rem 0.75rem 2.5rem;
+  }
+
+  .dome-gallery-header {
+    margin-bottom: 1.25rem;
+    padding: 0 0.5rem;
+  }
+
+  .section-title-accent {
+    font-size: 1.65rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.82rem;
+    max-width: 320px;
+    line-height: 1.5;
+  }
+
+  .dome-gallery-viewport {
+    height: 400px;
+    touch-action: none;
+  }
+
+  .dome-card-meta {
+    padding: 0.5rem 0.55rem;
+    min-height: 2.85rem;
+  }
+
+  .dome-card-title {
+    font-size: 0.72rem;
   }
 
   .hero-title {
@@ -1525,6 +1559,23 @@ body {
 }
 
 @media (max-width: 480px) {
+  .dome-gallery-section {
+    padding: 1rem 0.5rem 2rem;
+  }
+
+  .dome-gallery-header {
+    margin-bottom: 1rem;
+  }
+
+  .section-title-accent {
+    font-size: 1.45rem;
+  }
+
+  .dome-gallery-viewport {
+    height: 360px;
+    perspective-origin: 50% 42%;
+  }
+
   .header {
     padding: 1rem;
   }

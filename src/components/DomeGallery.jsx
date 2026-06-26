@@ -1,5 +1,17 @@
 import React, { useRef, useState, useEffect } from "react";
 
+function getGalleryDimensions() {
+  const w = window.innerWidth;
+
+  if (w <= 400) {
+    return { radius: 300, cardW: 100, cardH: 155, perspective: 900 };
+  }
+  if (w <= 768) {
+    return { radius: 340, cardW: 118, cardH: 172, perspective: 1000 };
+  }
+  return { radius: 380, cardW: 180, cardH: 250, perspective: 1200 };
+}
+
 function DomeGallery({ items = [] }) {
   const containerRef = useRef(null);
   const [rotationY, setRotationY] = useState(0);
@@ -7,20 +19,26 @@ function DomeGallery({ items = [] }) {
   const [startX, setStartX] = useState(0);
   const [startRotation, setStartRotation] = useState(0);
   const [velocity, setVelocity] = useState(0);
+  const [dims, setDims] = useState(getGalleryDimensions);
   const lastXRef = useRef(0);
   const lastTimeRef = useRef(0);
   const animationFrameRef = useRef(null);
 
-  // Flatten or map items to get a single array of images with industry meta
-  const galleryImages = items.map((ind, i) => ({
-    url: ind.images[0], // first image of each industry
+  const galleryImages = items.map((ind) => ({
+    url: ind.images[0],
     name: ind.name,
-    accent: ind.accent
+    accent: ind.accent,
   }));
 
   const count = galleryImages.length;
   const angleIncrement = 360 / (count || 1);
-  const radius = 380; // Cylinder radius in px
+  const { radius, cardW, cardH, perspective } = dims;
+
+  useEffect(() => {
+    const onResize = () => setDims(getGalleryDimensions());
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   // Inertia scrolling after release
   useEffect(() => {
@@ -129,7 +147,7 @@ function DomeGallery({ items = [] }) {
   }, [isDragging]);
 
   return (
-    <div className="dome-gallery-section">
+    <div className="dome-gallery-section" aria-label="Sectors in Motion">
       <div className="dome-gallery-header">
         <h3 className="section-title-accent">Sectors in Motion</h3>
         <p className="section-subtitle">Swipe or drag to spin the 3D gallery and explore our active pursuits.</p>
@@ -138,6 +156,11 @@ function DomeGallery({ items = [] }) {
       <div
         className="dome-gallery-viewport"
         ref={containerRef}
+        style={{
+          "--dome-perspective": `${perspective}px`,
+          "--dome-card-w": `${cardW}px`,
+          "--dome-card-h": `${cardH}px`,
+        }}
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
@@ -149,8 +172,10 @@ function DomeGallery({ items = [] }) {
         <div
           className="dome-gallery-cylinder"
           style={{
+            width: cardW,
+            height: cardH,
             transform: `translateZ(-${radius}px) rotateY(${-rotationY}deg)`,
-            cursor: isDragging ? "grabbing" : "grab"
+            cursor: isDragging ? "grabbing" : "grab",
           }}
         >
           {galleryImages.map((img, index) => {
@@ -160,8 +185,10 @@ function DomeGallery({ items = [] }) {
                 key={index}
                 className="dome-gallery-card"
                 style={{
+                  width: cardW,
+                  height: cardH,
                   transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
-                  borderTop: `3px solid ${img.accent || "#fff"}`
+                  borderTop: `3px solid ${img.accent || "#fff"}`,
                 }}
               >
                 <div
